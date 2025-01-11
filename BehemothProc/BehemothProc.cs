@@ -14,18 +14,13 @@ using RiskOfOptions.Options;
 
 namespace BehemothProc
 {
-
-    [BepInDependency(ItemAPI.PluginGUID)]
-    [BepInDependency(LanguageAPI.PluginGUID)]
-    [BepInDependency(PrefabAPI.PluginGUID)]
-
     [BepInDependency("com.rune580.riskofoptions")]
 
     // Soft Dependencies
     //[BepInDependency(LookingGlass.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
 
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
-    [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.DifferentModVersionsAreOk)]
+    [NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
     public class MountainItemPlugin : BaseUnityPlugin
     {
 
@@ -48,17 +43,20 @@ namespace BehemothProc
 
             var Config = new ConfigFile(System.IO.Path.Combine(Paths.ConfigPath, "braquen-LetBehemothProc.cfg"), true);
 
-            ProcCoefficient = Config.Bind("LET HIM PROC!", "Proc Coefficient", 0.5f, "This number is multiplied by the proc coefficient of the original attack to determine the explosion's proc coefficient, i.e. its the Proc Coefficient's Coefficient.");
+            ProcCoefficient = Config.Bind("LET HIM PROC!", "Proc Coefficient", 0.5f, "This number is multiplied by the proc coefficient of the original attack to determine the explosion's proc coefficient, i.e. its the Proc Coefficient's Coefficient. Set to 0 to return to normal functionality.");
 
             //Set the max to 10x proc chance, because its a free country.
             ModSettingsManager.AddOption(new StepSliderOption(ProcCoefficient,
-                new StepSliderConfig { min = 0, max = 1, increment = 0.1f }));
+                new StepSliderConfig { min = 0, max = 10, increment = 0.1f }));
 
+            ModSettingsManager.SetModDescription("A mod to allow Behemoth explosions to proc other items.");
+            var sprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Behemoth/texBehemothIcon.png").WaitForCompletion();
+            ModSettingsManager.SetModIcon(sprite);
 
             IL.RoR2.GlobalEventManager.OnHitAllProcess += GlobalEventManager_OnHitAllProcess;
         }
 
-        private static void GlobalEventManager_OnHitAllProcess(MonoMod.Cil.ILContext il)
+        private static void GlobalEventManager_OnHitAllProcess(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
