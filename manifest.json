@@ -1,0 +1,12 @@
+{
+    "name": "Sticky_Tweaks",
+    "author": "Braquen",
+    "version_number": "1.0.3",
+    "description": "Make your stickiest dreams come true by making sticky bomb proc other items and allowing it to proc on hitting terrain!",
+    "website_url": "https://github.com/Jorianta",
+    "dependencies": [
+        "RiskofThunder-HookGenPatcher-1.2.9",
+        "Rune580-Risk_Of_Options-2.8.5",
+        "RiskofThunder-R2API_ProcType-1.0.2"
+    ]
+}

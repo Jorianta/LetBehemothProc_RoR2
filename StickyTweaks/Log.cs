@@ -1,7 +1,7 @@
 ﻿using BepInEx.Logging;
 using System.Diagnostics;
 
-namespace BehemothProc
+namespace StickyTweaks
 {
     internal static class Log
     {
